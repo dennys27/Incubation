@@ -5,11 +5,12 @@ import Navbar from './Navbar'
 const Home = () => {
   return (
     <div>
-      <Navbar/>
-      
-          
+      <div>
+        <Navbar />
       </div>
-  )
+      <Hero />
+    </div>
+  );
 }
 
 export default Home
