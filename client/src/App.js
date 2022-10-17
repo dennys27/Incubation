@@ -8,12 +8,14 @@ import Login from "./Components/user/Login";
 import Adminhome from "./Components/admin/Adminhome";
 
 function App() {
+ 
   return (
     <>
       <Routes>
         <Route element={<Home />} path="/" />
         <Route element={<Signup />} path="/signup" />
         <Route element={<Login />} path="/login" />
+        
         <Route element={<Application />} path="/slotbooking" />
       </Routes>
 

@@ -84,6 +84,7 @@ const Signup = () => {
             </Grid>
             <Grid item xs={12} sm={6} md={3} lg={12}>
               <TextField
+                type="password"
                 id="outlined-password"
                 label="Password"
                 name="password"

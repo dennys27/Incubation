@@ -5,6 +5,7 @@ const bcrypt = require("bcrypt");
 const Joi = require("joi");
 const { User, validate } = require("../models/user");
 const { Application } = require("../models/Application");
+const { Slot } = require("../models/slots");
 
 
 
@@ -78,6 +79,11 @@ router.post("/login", async (req, res) => {
 router.post("/application",async (req, res) => {
   console.log(req.body);
   await new Application(req.body).save()
+})
+
+router.get("/slots",async (req, res) => {
+  const slots = await Slot.find();
+   res.json({ slots });
 })
    
 

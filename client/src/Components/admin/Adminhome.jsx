@@ -18,10 +18,7 @@ const Adminhome = () => {
           </Grid>
         </Grid>
         
-        {/* <Stack direction="row" spacing={1} justifyContent="normal">
-          <Sidebar />
-          <Rightbar />
-        </Stack> */}
+     
       </>
     );
 }

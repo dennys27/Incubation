@@ -9,7 +9,7 @@ import Bookingslots from './Bookingslots';
 
 const Rightbar = () => {
   return (
-    <div style={{marginTop:"20px",marginLeft:"100px"}}>
+    <div style={{padding:"60px"}}>
       {/* <Applicantlist/> */}
       <Bookingslots/>
       
