@@ -9,7 +9,6 @@ const applicationSchema = new mongoose.Schema({
   Email: { type: String, required: true },
   Phone: { type: String, required: true },
   CompanyName: { type: String, required: true },
-  CompanyLogo: { type: String },
   DescribeYourTeamAndBackground: { type: String, required: true },
   DescribeYourCompanyAndProducts: { type: String, required: true },
   DescribeTheProblem: { type: String, required: true },
@@ -22,6 +21,7 @@ const applicationSchema = new mongoose.Schema({
   TypeOfIncubation: { type: String, required: true },
   BuisnessProposel: { type: String, required: true },
   Status: { type: String, required: true },
+  View: { type: Boolean, required: true },
 });
 
 const Application = mongoose.model("Application", applicationSchema);

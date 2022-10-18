@@ -16,39 +16,51 @@ import Person2Icon from "@mui/icons-material/Person2";
 import { Home } from "@mui/icons-material";
 import React from "react";
  
-const Sidebar = () => {
+const Sidebar = ({ setSelected }) => {
+ 
   return (
     <Box flex={1} p={0} sx={{ display: { xs: "none", sm: "block" } }}>
-      <Box position="fixed" sx={{ backgroundColor: "#212121", width: 230,height:"100%" }}>
+      <Box
+        position="fixed"
+        sx={{
+          backgroundColor: "#212121",
+          width: 230,
+          height: "100%",
+          color: "white",
+        }}
+      >
         <List>
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <Home />
+                <Home sx={{ color: "white" }} />
               </ListItemIcon>
-              <ListItemText primary="Applicant List" />
+              <ListItemText
+                onClick={() => {
+                  setSelected("applications");
+                }}
+                primary="Applicant List"
+              />
+            </ListItemButton>
+          </ListItem>
+
+          <ListItem disablePadding>
+            <ListItemButton component="a" href="#">
+              <ListItemIcon>
+                <WorkspacesIcon sx={{ color: "white" }} />
+              </ListItemIcon>
+              <ListItemText
+                onClick={() => {
+                  setSelected("slotbooking");
+                }}
+                primary="Booking Slots"
+              />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <DescriptionIcon />
-              </ListItemIcon>
-              <ListItemText primary="Pages" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="#">
-              <ListItemIcon>
-                <WorkspacesIcon />
-              </ListItemIcon>
-              <ListItemText primary="Booking Slots" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="#">
-              <ListItemIcon>
-                <StoreIcon />
+                <StoreIcon sx={{ color: "white" }} />
               </ListItemIcon>
               <ListItemText primary="Record Track" />
             </ListItemButton>
@@ -56,23 +68,16 @@ const Sidebar = () => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <Diversity2Icon />
+                <Diversity2Icon sx={{ color: "white" }} />
               </ListItemIcon>
-              <ListItemText primary="Friends" />
+              <ListItemText primary="Record List" />
             </ListItemButton>
           </ListItem>
+
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <Person2Icon />
-              </ListItemIcon>
-              <ListItemText primary="Profile" />
-            </ListItemButton>
-          </ListItem>
-          <ListItem disablePadding>
-            <ListItemButton component="a" href="#">
-              <ListItemIcon>
-                <SettingsSuggestIcon />
+                <SettingsSuggestIcon sx={{ color: "white" }} />
               </ListItemIcon>
               <ListItemText primary="Settings" />
             </ListItemButton>

@@ -1,5 +1,12 @@
 .slot{
-     height: 80px;
+      height: 80px;
       width: 80px;
-      background-color:red;
+      background-color:rgb(10, 95, 223);
+      box-shadow: rgba(60, 64, 67, 0.3) 0px 1px 2px 0px, rgba(60, 64, 67, 0.15) 0px 1px 3px 1px;
+      border-radius: 3px;
+}
+
+.slot:hover{
+       background-color:rgb(0, 80, 201);
+       scale: 1.1;
 }

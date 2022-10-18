@@ -43,7 +43,7 @@ router.post('/signup', async (req, res, next) => {
     console.log(error);
     res.status(500).send({message:"Internal server error"})
   }
-  console.log(req.body);
+  console.log(req.body); 
 });
 
 router.post("/login", async (req, res) => {
@@ -78,12 +78,17 @@ router.post("/login", async (req, res) => {
 
 router.post("/application",async (req, res) => {
   console.log(req.body);
-  await new Application(req.body).save()
+  await new Application(req.body).save() 
+})
+ 
+router.get("/slots",async (req, res) => { 
+  const slots = await Slot.find();
+   res.send(slots);
 })
 
-router.get("/slots",async (req, res) => {
-  const slots = await Slot.find();
-   res.json({ slots });
+router.get("/applications",async (req, res) => { 
+  const applications = await Application.find();
+   res.send(applications);
 })
    
 

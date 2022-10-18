@@ -30,12 +30,15 @@ const Application = () => {
           MarketingPlan: "",
           TypeOfIncubation:"",
           BuisnessProposel: "",
-          status:"pending"
+          Status:"pending",
+          View:false
           
   };
   
 
-const [formData, setFormData] = useState(formValues);
+  const [formData, setFormData] = useState(formValues);
+  
+  
 
    const handleChange = (e) => {
      setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -44,7 +47,8 @@ const [formData, setFormData] = useState(formValues);
      setFormData({ ...formData, [e.target.name]: e.target.files[0] });
   }
 
-     const handleSubmit = () => {
+  const handleSubmit = () => {
+      
        console.log("im working");
        axios
          .post("http://localhost:8000/application",formData)
@@ -156,8 +160,7 @@ const [formData, setFormData] = useState(formValues);
               <Button variant="contained" component="label">
                 Upload
                 <input
-                  name="CompanyLogo"
-                  onChange={handleImage}
+                 
                   hidden
                   accept="image/*"
                   type="file"

@@ -3,10 +3,10 @@ const jwt = require("jsonwebtoken")
 const joi = require("joi")
 const passwordComplexity = require("joi-password-complexity")
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({ 
     name:{type:String,required:true},
     email:{type:String,required:true}, 
-    password:{type:String,required:true} 
+    password:{type:String,required:true}  
 })
 
 userSchema.methods.generateAuthToken = function () {

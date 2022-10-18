@@ -2,8 +2,10 @@ import { Box, Button, Container, Grid, TextField } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React from "react";
 import axios from "axios";
+import * as yup from "yup";
 import Navbar from "./Navbar";
 import "./Signup.css";
+import {loginschema} from '../../Validations/UserValidation'
 import { useState } from "react";
 
 const Signup = () => {
