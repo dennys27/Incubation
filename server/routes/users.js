@@ -91,6 +91,14 @@ router.get("/applications",async (req, res) => {
    res.send(applications);
 })
    
+router.post("/changeview",async (req, res) => { 
+  await Application.findOneAndUpdate({_id:req.body.id},{View:true}, {upsert: true},)
+})
+router.post("/setapprovel", async (req, res) => { 
+  console.log(req.body);
+  await Application.findOneAndUpdate({_id:req.body.id},{Status:"approved"}, {upsert: true},)
+})
+   
 
  
 module.exports = router;

@@ -1,28 +1,19 @@
-import React from "react";
-import Tablee from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import { Button, Typography } from "@mui/material";
-import axios from 'axios'
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import React from 'react'
+import { useContext } from "react";
+import { ApplicationContext } from "../../Store/applications";
 
-const Pendingtable = ({ application }) => {
-  
-  const setApprovel = (id) => {
-      axios.post("http://localhost:8000/setapprovel",{id:id})
-  }
 
+const Approved = ({ application }) => {
+  const { applications } = useContext(ApplicationContext);
   return (
     <>
       <Typography m={4} variant="h5">
-        Pending Applications
+        Approved Applications
       </Typography>
-
+ 
       <TableContainer sx={{ width: 900 }} component={Paper}>
-        <Tablee aria-label="simple table">
+        <Table aria-label="simple table">
           <TableHead>
             <TableRow>
               <TableCell align="center">Sl.no</TableCell>
@@ -31,8 +22,8 @@ const Pendingtable = ({ application }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {application.map((row) =>
-              row.View==true && row.Status=="pending"? (
+            {applications.map((row) =>
+              row.Status=="approved"? (
                 <TableRow key={row._id}>
                   <TableCell align="center" component="th" scope="row">
                     {row.name}
@@ -44,31 +35,21 @@ const Pendingtable = ({ application }) => {
                     <p> {row.Email}</p>
                   </TableCell>
                   <TableCell align="center">
-                    <Button
-                      onClick={() => {
-                        setApprovel(row._id)
-                      }}
-                      variant="contained"
-                      href="#contained-buttons"
-                    >
-                      Approve
-                    </Button>
-                  </TableCell>
-                  <TableCell align="center">
                     <Button variant="contained" href="#contained-buttons">
-                      Decline
+                      Allocate
                     </Button>
                   </TableCell>
+              
                 </TableRow>
               ) : (
                 ""
               )
             )}
           </TableBody>
-        </Tablee>
+        </Table>
       </TableContainer>
     </>
   );
-};
+}
 
-export default Pendingtable;
+export default Approved

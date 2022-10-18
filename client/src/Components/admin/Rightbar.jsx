@@ -1,7 +1,8 @@
 import React from 'react'
 import Applicantlist from './Applicantlist';
 import Bookingslots from './Bookingslots';
-import ViewApplication from './ViewApplication';
+import Approved from './Approved';
+
 
 
 
@@ -15,8 +16,8 @@ const Rightbar = ({selected,setSelected}) => {
          return [<Applicantlist setSelected={setSelected} />];
       case 'slotbooking':
          return [<Bookingslots />];
-      case 'applicationView':
-         return [<ViewApplication />];
+      case 'approved':
+         return [<Approved/>];
       
    }
 }

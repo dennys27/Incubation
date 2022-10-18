@@ -62,7 +62,12 @@ const Sidebar = ({ setSelected }) => {
               <ListItemIcon>
                 <StoreIcon sx={{ color: "white" }} />
               </ListItemIcon>
-              <ListItemText primary="Record Track" />
+              <ListItemText
+                onClick={() => {
+                  setSelected("approved");
+                }}
+                primary="Record Track"
+              />
             </ListItemButton>
           </ListItem>
           <ListItem disablePadding>

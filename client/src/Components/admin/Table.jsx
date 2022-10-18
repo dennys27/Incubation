@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext,useEffect } from "react";
 import Tablee from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -29,19 +29,35 @@ const style = {
 
 
 const Table = ({ application, setSelected }) => {
+  let refresh=false
   const [modal, setModal] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const { applications } = useContext(ApplicationContext);
+
+  useEffect(() => {
+    
+  },[refresh])
   
   const handleOpen = (id) => {
   
-    applications.map((data) => {
-      if(data._id)
+    applications.map(async(data) => {
+      if (data._id === id) {
+       
+        setModal(data);
+        
+        await setOpened(id)
+       
+      }
     })
 
     setOpen(true)
   }
-   const handleClose = () => setOpen(false);
+
+  const handleClose = () => setOpen(false);
+  
+  const setOpened = async(id) => {
+   await axios.post("http://localhost:8000/changeview",{id:id});
+  }
 
  
   
@@ -62,6 +78,7 @@ const Table = ({ application, setSelected }) => {
           </TableHead>
           <TableBody>
             {application.map((row) => (
+              !row.View?
               <TableRow key={row._id}>
                 <TableCell align="center" component="th" scope="row">
                   {row.name}
@@ -81,10 +98,10 @@ const Table = ({ application, setSelected }) => {
                     View
                   </Button>
                 </TableCell>
-              </TableRow>
+              </TableRow>:""
             ))}
           </TableBody>
-        </Tablee>
+        </Tablee> 
       </TableContainer>
 
       <Modal
@@ -95,10 +112,10 @@ const Table = ({ application, setSelected }) => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Text in a modal
+            Details
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Duis mollis, est non commodo luctus, nisi erat porttitor ligula.
+            CompanyName:{modal.name}
           </Typography>
         </Box>
       </Modal>
