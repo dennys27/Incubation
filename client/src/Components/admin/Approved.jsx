@@ -4,8 +4,16 @@ import { useContext } from "react";
 import { ApplicationContext } from "../../Store/applications";
 
 
-const Approved = ({ application }) => {
+
+const Approved = ({ setSelected}) => {
   const { applications } = useContext(ApplicationContext);
+  const setAllocate = (userId,companyId) => {
+    localStorage.setItem("userId", JSON.stringify(userId));
+    localStorage.setItem("companyId", JSON.stringify(companyId));
+    setSelected("slotbooking")
+
+  }
+
   return (
     <>
       <Typography m={4} variant="h5">
@@ -23,7 +31,7 @@ const Approved = ({ application }) => {
           </TableHead>
           <TableBody>
             {applications.map((row) =>
-              row.Status=="approved"? (
+              row.Status==="approved"? (
                 <TableRow key={row._id}>
                   <TableCell align="center" component="th" scope="row">
                     {row.name}
@@ -35,7 +43,7 @@ const Approved = ({ application }) => {
                     <p> {row.Email}</p>
                   </TableCell>
                   <TableCell align="center">
-                    <Button variant="contained" href="#contained-buttons">
+                    <Button onClick={()=>{setAllocate(row.UserId,row._id);}} variant="contained">
                       Allocate
                     </Button>
                   </TableCell>

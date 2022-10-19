@@ -17,7 +17,7 @@ const Rightbar = ({selected,setSelected}) => {
       case 'slotbooking':
          return [<Bookingslots />];
       case 'approved':
-         return [<Approved/>];
+         return [<Approved setSelected={setSelected} />];
       
    }
 }

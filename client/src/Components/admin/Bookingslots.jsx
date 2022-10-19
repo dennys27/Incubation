@@ -30,30 +30,39 @@ const style = {
 
 let rooms;
 const Bookingslots = () => {
-  const [slot,setSlots] = useState([])
+  const [slot, setSlots] = useState([])
+  const [companies, setCompanies] = useState([])
+  const [option, setOption] = useState("")
+  const [choosen, setChoosen] = useState('not choosen')
+  const [open, setOpen] = React.useState(false);
+ 
   useEffect(() => {
   axios.get("http://localhost:8000/slots").then((mydata) => {
     const { data } = mydata
     rooms = data;
   }).then(() => {
        setSlots(rooms);
-       console.log(slot , "jgssssssssssssssssf");
-    })
+  })
+    
+    axios.get("http://localhost:8000/approvedcompanies").then((Cdata) => {
+      const { data } = Cdata;
+      setCompanies(data)
+      console.log(data,"im working here.........");
+    });  
+    
   }, [0])
 
 
-   const [age, setAge] = React.useState("");
-
-   const handleChange = (event) => {
-     setAge(event.target.value);
-   };
-
-  const handleBooking = (userId,slotId) =>{
-    
+  const handleModal = (e) =>{
+    setOption(e.target.value)
   }
 
-   const [open, setOpen] = React.useState(false);
-   const handleOpen = () => setOpen(true);
+
+  const handleOpen = (id) => {
+      setChoosen(id)
+      setOpen(true);
+  }
+  
    const handleClose = () => setOpen(false);
 
   return (
@@ -68,7 +77,9 @@ const Bookingslots = () => {
           return (
             <Grid item xs={1}>
               <div
-                onClick={handleOpen}
+                onClick={() => {
+                  handleOpen(data._id);
+                }}
                 style={{
                   color: "white",
                   display: "flex",
@@ -99,23 +110,29 @@ const Bookingslots = () => {
         <Fade in={open}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h6" component="h2">
-              Text in a modal
+              Approved Companies
             </Typography>
-            <FormControl  sx={{ m: 1, minWidth: 120,color:"white" }} size="small">
-              <InputLabel id="demo-select-small">Age</InputLabel>
+            <FormControl
+              sx={{ m: 1, minWidth: 120, color: "white" }}
+              size="small"
+            >
+              <InputLabel id="demo-select-small">select</InputLabel>
               <Select
                 labelId="demo-select-small"
                 id="demo-select-small"
-                value={age}
-                label="Age"
-                onChange={handleChange}
+                value=''
+                name="company"
+                label="select"
+                onChange={handleModal}
               >
-                <MenuItem value="">
-                  <em>None</em>
-                </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                {
+                  companies.map(({name,_id}) => {
+                    console.log(_id,"dhsfgshfs");
+                    <MenuItem value={name}>{ name}</MenuItem>;
+                  })
+              }
+              
+             
               </Select>
             </FormControl>
           </Box>

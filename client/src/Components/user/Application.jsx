@@ -1,15 +1,15 @@
 import { Box, Button, Container, FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from '@mui/material'
-import React, { useState } from 'react'
-import IconButton from "@mui/material/IconButton";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
-
+import React, { useState,useContext } from 'react'
 import axios from "axios";
 import './Application.css'
 import Navbar from './Navbar';
+import { AuthContext } from '../../Store/context';
 
 
 
 const Application = () => {
+  const { user } = useContext(AuthContext);
+  console.log(user,"dskkkkkkkkkkkkkf");
       const formValues = {
           name: "",
           Address: "",
@@ -30,6 +30,7 @@ const Application = () => {
           MarketingPlan: "",
           TypeOfIncubation:"",
           BuisnessProposel: "",
+          UserId:user._id,
           Status:"pending",
           View:false
           

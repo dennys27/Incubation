@@ -98,6 +98,17 @@ router.post("/setapprovel", async (req, res) => {
   console.log(req.body);
   await Application.findOneAndUpdate({_id:req.body.id},{Status:"approved"}, {upsert: true},)
 })
+
+router.get("/approvedcompanies", async (req, res) => { 
+  console.log(req.body);
+  res.send(await Application.find({ Status: "approved" }));
+  console.log(await Application.find({ Status: "approved" }),"gggggggggg");
+})
+
+router.post("/setslot", async (req, res) => { 
+  console.log(req.body);
+  // await Application.findOneAndUpdate({_id:req.body.id},{Status:"approved"}, {upsert: true},)
+})
    
 
  

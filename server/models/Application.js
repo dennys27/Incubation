@@ -20,6 +20,7 @@ const applicationSchema = new mongoose.Schema({
   MarketingPlan: { type: String, required: true },
   TypeOfIncubation: { type: String, required: true },
   BuisnessProposel: { type: String, required: true },
+  UserId: { type: String, required: true },
   Status: { type: String, required: true },
   View: { type: Boolean, required: true },
 });
