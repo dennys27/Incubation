@@ -4,12 +4,17 @@ import axios from "axios";
 import './Application.css'
 import Navbar from './Navbar';
 import { AuthContext } from '../../Store/context';
+import { useNavigate } from 'react-router-dom';
 
 
 
 const Application = () => {
-  const { user } = useContext(AuthContext);
-  console.log(user,"dskkkkkkkkkkkkkf");
+  let navigate = useNavigate()
+  let user = localStorage.getItem("user");
+  if (!user) {
+    navigate("/login")
+  }
+  
       const formValues = {
           name: "",
           Address: "",

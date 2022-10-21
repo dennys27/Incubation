@@ -6,6 +6,7 @@ const Joi = require("joi");
 const { User, validate } = require("../models/user");
 const { Application } = require("../models/Application");
 const { Slot } = require("../models/slots");
+const { Admin } = require("../models/Admin");
 
 
 
@@ -77,7 +78,7 @@ router.post("/login", async (req, res) => {
 });
 
 router.post("/application",async (req, res) => {
-  console.log(req.body);
+  
   await new Application(req.body).save() 
 })
  
@@ -95,19 +96,39 @@ router.post("/changeview",async (req, res) => {
   await Application.findOneAndUpdate({_id:req.body.id},{View:true}, {upsert: true},)
 })
 router.post("/setapprovel", async (req, res) => { 
-  console.log(req.body);
+ 
   await Application.findOneAndUpdate({_id:req.body.id},{Status:"approved"}, {upsert: true},)
 })
 
 router.get("/approvedcompanies", async (req, res) => { 
   console.log(req.body);
   res.send(await Application.find({ Status: "approved" }));
-  console.log(await Application.find({ Status: "approved" }),"gggggggggg");
+ 
 })
 
-router.post("/setslot", async (req, res) => { 
+router.post("/setslot", async (req, res) => {
   console.log(req.body);
-  // await Application.findOneAndUpdate({_id:req.body.id},{Status:"approved"}, {upsert: true},)
+  await Slot.findOneAndUpdate(
+    { slotNo: req.body.Slot },
+    { companyId: req.body.CompanyName }
+    , { upsert: true }).then((data) => {
+      console.log(data,"yoooooooooo");
+    })
+  await Application.findOneAndUpdate({ _id: req.body.CompanyName }, { Status: "allocated" }, { upsert: true },)
+ 
+   res.send({ status: "success" });
+})
+
+router.post("/adminlogin", async (req, res) => {
+  console.log(req.body);
+  const admin = await Admin.find({ email: req.body.email })
+    
+  if (admin===null) {
+    res.send({ status: false });
+  } else {
+      res.send({ status: true,admin });
+  }
+ 
 })
    
 

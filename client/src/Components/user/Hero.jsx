@@ -1,4 +1,6 @@
 import { Box, Button, Grid, Typography } from '@mui/material'
+  import { ToastContainer, toast } from "react-toastify";
+  import "react-toastify/dist/ReactToastify.css";
 import hero from "./images/fun-3d-cartoon-teenage-boy.jpg";
 import './Hero.css'
 import React from 'react'
@@ -6,7 +8,25 @@ import { Link, useNavigate } from 'react-router-dom';
 
 
 const Hero = () => {
+ 
   const navigate = useNavigate();
+  const handleClick =async () => {
+    let user = await localStorage.getItem("user")
+    if (user) {
+      navigate("/slotbooking")
+    } else {
+      toast.info("Please login first", {
+        position: "top-right",
+        autoClose: 4000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  }
   return (
     <div style={{ display: "block", marginTop: "64px" }}>
       <Box
@@ -41,16 +61,13 @@ const Hero = () => {
               Don’t wait. The time will never be just right.
             </Typography>
             <Button
+              onClick={handleClick}
               sx={{ backgroundColor: "#121858", marginTop: 1, marginLeft: 9 }}
               variant="contained"
             >
-              <Link
-                style={{ textDecoration: "none", color: "white" }}
-                to="/slotbooking"
-              >
-                Register Now
-              </Link>
+              Register Now
             </Button>
+            <ToastContainer />
           </Grid>
           <Grid
             container

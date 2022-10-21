@@ -1,50 +1,46 @@
-import { Box, Button, Container, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 import React from "react";
 import axios from "axios";
-import Navbar from "./Navbar";
-import "./Signup.css";
+import Navbar from "./AdminNavbar";
+import "../user/Signup.css";
 import { useState } from "react";
-import { AuthContext } from "../../Store/context";
+import { AdminContext } from "../../Store/Admin";
 import { useContext } from "react";
 
-const Login = () => {
-  const { setUser } = useContext(AuthContext);
-   const navigate = useNavigate();
-   const formvalues = {
-     email: "",
-     password: "",
+const AdminLogin = () => {
+  const { setAdmin } = useContext(AdminContext);
+  const navigate = useNavigate();
+  const formvalues = {
+    email: "",
+    password: "",
   };
-  
 
-   const [login, setLogin] = useState(formvalues);
+  const [login, setLogin] = useState(formvalues);
 
-   const handleChange = (e) => {
-     setLogin({ ...login, [e.target.name]: e.target.value });
-   };
+  const handleChange = (e) => {
+    setLogin({ ...login, [e.target.name]: e.target.value });
+  };
 
-   const handleSubmit = () => {
-     console.log("im working");
-     axios
-       .post("http://localhost:8000/login", login)
-       .then((res) => {
-        
-         localStorage.setItem("token", res.data);
-         console.log(res.data.user);
-         if (res.data.user) {
-           localStorage.setItem("user", JSON.stringify(res.data.user));
-           let use = localStorage.getItem("user")
-           console.log(use,"llllllllllllllllllll");
-           setUser(res.data.user);
-           navigate("/");
-         }
-         
-       })
-       .catch((error) => {
-         console.log(error);
-       });
-   };
+  const handleSubmit = () => { 
+    console.log("im working");
+    axios
+      .post("http://localhost:8000/adminlogin", login)
+        .then((res) => {
+          console.log(res.data,"daaaaaaaaaaataaaaaaa");
+        localStorage.setItem("token", res.data);
+        console.log(res.data) 
+            if (res.data.status) {
+             localStorage.setItem("admin", res.data.admin);
+          setAdmin(res.data.user);
+          navigate("/admin");
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <>
@@ -72,7 +68,7 @@ const Login = () => {
                 <AccountCircleIcon sx={{ fontSize: 40 }} />
               </Box>
             </Grid>
-           
+
             <Grid item xs={12} sm={6} md={3} lg={12}>
               <TextField
                 id="outlined-email"
@@ -124,4 +120,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default AdminLogin;

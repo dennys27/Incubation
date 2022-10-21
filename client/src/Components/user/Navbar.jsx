@@ -5,10 +5,14 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { AppBar, Button, IconButton, Toolbar, Typography } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { AuthContext } from '../../Store/context';
+import { OpenInFull } from '@mui/icons-material';
 
 
 const Navbar = () => {
-const { user } = useContext(AuthContext);
+  const { user, setUser } = useContext(AuthContext);
+  let localUser = localStorage.getItem("user")
+  console.log({...localUser},"yuuuuuuuu");
+  
 console.log(user,"user context...............");
   return (
     <div className="navbar">

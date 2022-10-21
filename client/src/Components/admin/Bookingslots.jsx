@@ -30,11 +30,12 @@ const style = {
 
 let rooms;
 const Bookingslots = () => {
-  const [slot, setSlots] = useState([])
-  const [companies, setCompanies] = useState([])
-  const [option, setOption] = useState("")
-  const [choosen, setChoosen] = useState('not choosen')
-  const [open, setOpen] = React.useState(false);
+  const [slot, setSlots] = useState([]);
+  const [companies, setCompanies] = useState([]);
+  const [choosen, setChoosen] = useState('not choosen');
+  const [organization, setOrganization] = useState('');
+
+  const [open, setOpen] = useState(false);
  
   useEffect(() => {
   axios.get("http://localhost:8000/slots").then((mydata) => {
@@ -47,14 +48,21 @@ const Bookingslots = () => {
     axios.get("http://localhost:8000/approvedcompanies").then((Cdata) => {
       const { data } = Cdata;
       setCompanies(data)
-      console.log(data,"im working here.........");
+     
     });  
     
-  }, [0])
+  }, [choosen])
 
 
-  const handleModal = (e) =>{
-    setOption(e.target.value)
+  const handleModal = async (e) => {
+
+    await axios.post("http://localhost:8000/setslot", { CompanyName: e.target.value, Slot: choosen }).then(() => {
+      console.log("yoooooo");
+      setOpen(false)
+      
+       
+    })
+
   }
 
 
@@ -74,25 +82,44 @@ const Bookingslots = () => {
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
         {slot.map((data) => {
+          console.log(data,"ggggggggg");
           return (
-            <Grid item xs={1}>
-              <div
-                onClick={() => {
-                  handleOpen(data._id);
-                }}
-                style={{
-                  color: "white",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-                className="slot"
-                key={data.id}
-              >
-                <h5>{data.name}</h5>
-              </div>
+            <Grid key={data._id} item xs={1}>
+              {data.companyId === "" ? (
+                <div
+                  onClick={() => {
+                    handleOpen(data.slotNo);
+                  }}
+                  style={{
+                    color: "white",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  className="slot"
+                  key={data.id}
+                >
+                  <h5>{data.name}</h5>
+                </div>
+              ) : (
+                <div 
+                  
+                  style={{
+                    backgroundColor: "#0d47a1",
+                    color: "white",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  className="slot"
+                  key={data.id}
+                >
+                  <h5>{data.name}</h5>
+                </div>
+              )}
             </Grid>
           );
+       
         })}
       </Grid>
 
@@ -116,30 +143,25 @@ const Bookingslots = () => {
               sx={{ m: 1, minWidth: 120, color: "white" }}
               size="small"
             >
-              <InputLabel id="demo-select-small">select</InputLabel>
+              <InputLabel sx={{color:"white"}} id="demo-select-small">select</InputLabel>
               <Select
                 labelId="demo-select-small"
                 id="demo-select-small"
-                value=''
+                value={organization}
                 name="company"
                 label="select"
                 onChange={handleModal}
               >
-                {
-                  companies.map(({name,_id}) => {
-                    console.log(_id,"dhsfgshfs");
-                    <MenuItem value={name}>{ name}</MenuItem>;
-                  })
-              }
-              
-             
+                {companies.map((item, index) => (
+                  <MenuItem value={item?._id}>{item?.CompanyName}</MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Box>
         </Fade>
       </Modal>
     </>
-  );
+  )
 }
 
 export default Bookingslots

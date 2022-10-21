@@ -6,8 +6,14 @@ import Application from "./Components/user/Application";
 import Signup from "./Components/user/Signup";
 import Login from "./Components/user/Login";
 import Adminhome from "./Components/admin/Adminhome";
+import AdminLogin from "./Components/admin/AdminLogin";
+import PrivateRoute from "./Components/PrivateRoute";
+
+
 
 function App() {
+
+  
  
   return (
     <>
@@ -15,12 +21,14 @@ function App() {
         <Route element={<Home />} path="/" />
         <Route element={<Signup />} path="/signup" />
         <Route element={<Login />} path="/login" />
-        
         <Route element={<Application />} path="/slotbooking" />
       </Routes>
 
       <Routes>
-        <Route element={<Adminhome />} path="/admin" />
+        <Route element={<AdminLogin />} path="/admin/login" />
+        <Route element={<PrivateRoute />}>
+          <Route element={<Adminhome />} path="/admin" />
+        </Route>
       </Routes>
     </>
   );
