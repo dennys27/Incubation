@@ -80,6 +80,7 @@ router.post("/login", async (req, res) => {
 router.post("/application",async (req, res) => {
   
   await new Application(req.body).save() 
+  res.json({ status: true })
 })
  
 router.get("/slots",async (req, res) => { 

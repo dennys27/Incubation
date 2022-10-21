@@ -5,16 +5,39 @@ import './Application.css'
 import Navbar from './Navbar';
 import { AuthContext } from '../../Store/context';
 import { useNavigate } from 'react-router-dom';
+import validator from "validator";
+  import { ToastContainer, toast } from "react-toastify";
 
 
 
 const Application = () => {
-  let navigate = useNavigate()
-  let user = localStorage.getItem("user");
+ const navigate = useNavigate()
+
+  let user = JSON.parse(localStorage.getItem("user"));
+  console.log(user,"gggggggggggggggggggggg");
+  let error = 0;
   if (!user) {
     navigate("/login")
   }
-  
+  const [nameError, setNameError] = useState("");
+  const [AddressError, setAddressError] = useState("");
+  const [CityError, setCityError] = useState("");
+  const [StateError, setStateError] = useState("");
+  const [EmailError, setEmailError] = useState("");
+  const [PhoneError, setPhoneError] = useState("");
+  // const [CompanyNameError, setCompanyNameError] = useState("");
+  // const [DescribeYourTeamAndBackgroundError,setDescribeYourTeamAndBackgroundError,] = useState("");
+  // const [DescribeYourCompanyAndProductsError,setDescribeYourCompanyAndProductsError,] = useState("");
+  // const [DescribeTheProblemError, setDescribeTheProblemError] = useState("");
+  // const [WhatsUniqeError, setWhatsUniqeError] = useState("");
+  // const [WhatsYourValueProptoCustomerError,setWhatsYourValueProptoCustomerError,] = useState("");
+  // const [CompetitorsAndYourAdvantageError,setCompetitorsAndYourAdvantageError,] = useState("");
+  // const [RevenueModelError, setRevenueModelError] = useState("");
+  // const [PotentiialMarketSizeError, setPotentiialMarketSizeError] = useState("");
+  // const [MarketingPlanError, setMarketingPlanError] = useState("");
+  // const [BuisnessProposelError, setBuisnessProposelError] = useState("");
+
+
       const formValues = {
           name: "",
           Address: "",
@@ -23,7 +46,6 @@ const Application = () => {
           Email: "",
           Phone: "",
           CompanyName: "",
-          CompanyLogo: "",
           DescribeYourTeamAndBackground: "",
           DescribeYourCompanyAndProducts: "",
           DescribeTheProblem: "",
@@ -42,6 +64,7 @@ const Application = () => {
   };
   
 
+
   const [formData, setFormData] = useState(formValues);
   
   
@@ -49,22 +72,64 @@ const Application = () => {
    const handleChange = (e) => {
      setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  const handleImage = (e) => {
-     setFormData({ ...formData, [e.target.name]: e.target.files[0] });
-  }
 
-  const handleSubmit = () => {
-      
-       console.log("im working");
-       axios
-         .post("http://localhost:8000/application",formData)
-         .then((res) => {
-           console.log(res);
-          
-         })
-         .catch((error) => {
-           console.log(error);
-         });
+   
+    const handleSubmit = () => {
+      if (formData.name === "") {
+        error++;
+        setNameError("enter a valid Name");
+      }
+      if (formData.Address === "") {
+        error++;
+        setAddressError("enter a valid address");
+      }
+      if (formData.City === "") {
+        error++;
+        setCityError("enter a valid city name");
+      }
+      if (formData.State === "") {
+        error++;
+        setStateError("enter a valid state")
+      }
+      if (formData.Phone === "") {
+        error++;
+        setPhoneError("enter a valid phone");
+      }
+      if (formData.Email === "") {
+        error++;
+        setEmailError("enter a valid email");
+      }
+
+
+      if (!validator.isEmail(formData.Email)) {
+        error++
+        setEmailError("Enter valid Email!"); 
+      }
+        if (error == 0) {
+          console.log("im working");
+          axios
+            .post("http://localhost:8000/application", formData)
+            .then(async(res) => {
+              await toast.info("Application submited successfully", {
+                  position: "top-right",
+                  autoClose: 2000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  pauseOnHover: true,
+                  draggable: true,
+                  progress: undefined,
+                  theme: "light",
+              })
+              setTimeout(() => {
+                 navigate("/");
+              },2500)
+             
+              
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        }
      };
   
 
@@ -93,6 +158,9 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {nameError}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6} md={3} lg={6}>
               <TextField
@@ -104,6 +172,9 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {AddressError}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6} md={3} lg={6}>
               <TextField
@@ -114,6 +185,10 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <ToastContainer />
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {CityError}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6} md={3} lg={6}>
               <TextField
@@ -125,6 +200,9 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {StateError}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6} md={3} lg={6}>
               <TextField
@@ -136,7 +214,11 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {EmailError}
+              </Typography>
             </Grid>
+
             <Grid item xs={12} sm={6} md={3} lg={6}>
               <TextField
                 id="outlined-phone"
@@ -147,8 +229,11 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {PhoneError}
+              </Typography>
             </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={6}>
+            <Grid item xs={12} sm={12} md={12} lg={12}>
               <TextField
                 id="outlined-company-name"
                 label="Company Name"
@@ -158,22 +243,7 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
-            </Grid>
-            <Grid item xs={12} sm={6} md={3} lg={6}>
-              <Typography sx={{ paddingRight: 2 }} variant="p">
-                Company Logo
-              </Typography>
-              <Button variant="contained" component="label">
-                Upload
-                <input
-                 
-                  hidden
-                  accept="image/*"
-                  type="file"
-                />
-              </Button>
-          
-             
+              <Typography sx={{ color: "red", fontSize: "12px" }}></Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <TextField
@@ -185,6 +255,7 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}></Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <TextField
@@ -196,6 +267,7 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}></Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <TextField
@@ -207,6 +279,7 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}></Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <TextField
@@ -218,6 +291,7 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}></Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <TextField
@@ -229,6 +303,7 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}></Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <TextField
@@ -240,6 +315,7 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}></Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <TextField
@@ -251,6 +327,7 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}></Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <TextField
@@ -262,6 +339,7 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}></Typography>
             </Grid>
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <TextField
@@ -273,8 +351,8 @@ const Application = () => {
                 sx={{ width: "100%" }}
                 onChange={handleChange}
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}></Typography>
             </Grid>
-
             <Grid item xs={12} sm={12} md={12} lg={12}>
               <FormControl sx={{ marginBottom: "30px" }}>
                 <FormLabel id="demo-row-radio-buttons-group-label">
@@ -313,6 +391,9 @@ const Application = () => {
                   sx={{ width: "100%" }}
                   onChange={handleChange}
                 />
+                <Typography
+                  sx={{ color: "red", fontSize: "12px" }}
+                ></Typography>
               </Grid>
               <Grid item xs={12} sm={12} md={12} lg={12}>
                 <Button

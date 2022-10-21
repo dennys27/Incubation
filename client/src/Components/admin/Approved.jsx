@@ -24,7 +24,7 @@ const Approved = ({ setSelected}) => {
         <Table aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="center">Sl.no</TableCell>
+              <TableCell align="center">Applicant Name</TableCell>
               <TableCell align="center">Company Name</TableCell>
               <TableCell align="center">Comapany Details</TableCell>
             </TableRow>

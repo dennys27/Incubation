@@ -12,19 +12,21 @@ const Hero = () => {
   const navigate = useNavigate();
   const handleClick =async () => {
     let user = await localStorage.getItem("user")
-    if (user) {
-      navigate("/slotbooking")
+    if (!user) {
+        toast.info("Please login first", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false, 
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+      
     } else {
-      toast.info("Please login first", {
-        position: "top-right",
-        autoClose: 4000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+    navigate("/slotbooking");
     }
   }
   return (

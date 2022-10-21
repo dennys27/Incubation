@@ -8,6 +8,7 @@ import Login from "./Components/user/Login";
 import Adminhome from "./Components/admin/Adminhome";
 import AdminLogin from "./Components/admin/AdminLogin";
 import PrivateRoute from "./Components/PrivateRoute";
+import UserRoutes from "./Components/UserRoutes";
 
 
 
@@ -21,7 +22,9 @@ function App() {
         <Route element={<Home />} path="/" />
         <Route element={<Signup />} path="/signup" />
         <Route element={<Login />} path="/login" />
-        <Route element={<Application />} path="/slotbooking" />
+        <Route element={<UserRoutes />}>
+          <Route element={<Application/>} path="/slotbooking" />
+        </Route>
       </Routes>
 
       <Routes>

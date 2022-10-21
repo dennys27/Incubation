@@ -8,7 +8,7 @@ import {ApplicationContext} from '../../Store/applications'
 
 const Applicantlist = ({ setSelected }) => {
   
-   const { setApplications } = useContext(ApplicationContext);
+   const {applications, setApplications } = useContext(ApplicationContext);
 
   const [application, setApplication] = useState([])
   useEffect(() => {
@@ -19,7 +19,7 @@ const Applicantlist = ({ setSelected }) => {
       setApplications(data)
     console.log(data, "im working you know..........");
   });
-  },[])
+  },[applications])
 
 
   return (

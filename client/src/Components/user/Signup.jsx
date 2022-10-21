@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, TextField } from "@mui/material";
+import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import React from "react";
 import axios from "axios";
@@ -7,15 +7,23 @@ import Navbar from "./Navbar";
 import "./Signup.css";
 import {loginschema} from '../../Validations/UserValidation'
 import { useState } from "react";
+import validator from "validator";
+import { useNavigate } from "react-router-dom";
+
+
 
 const Signup = () => {
-   
+  const navigate = useNavigate() 
+
   const formvalues = {
     name: "",
     email: "",
     password: "",
   };
-    const [signup, setSignup] = useState(formvalues);
+     const [signup, setSignup] = useState(formvalues);
+     const [nameError, setNameError] = useState("");
+     const [emailError, setEmailError] = useState("");
+     const [passwordError, setPasswordError] = useState("");
     
   const handleChange = (e) => {
   
@@ -25,15 +33,28 @@ const Signup = () => {
  
 
   const handleSubmit = () => {
-     console.log("im working");
-     axios
-       .post("http://localhost:8000/signup", signup)
-       .then((res) => {
-         console.log(res.data); 
-       })
-       .catch((error) => {
-         //console.log(error);
-       });
+
+    if (signup.name === "") {
+       setNameError("enter a valid username")
+     }
+    if (signup.password === "") {
+       setPasswordError("enter a valid password")
+     }
+    if (!validator.isEmail(signup.email)) {
+      console.log("yes im here.....");
+      setEmailError("Enter valid Email!");
+    } else {
+
+      console.log("im working");
+      axios
+        .post("http://localhost:8000/signup", signup)
+        .then((res) => {
+         navigate("/login")
+        })
+        .catch((error) => {
+          //console.log(error);
+        });
+    }
    };
     
   return (
@@ -72,6 +93,9 @@ const Signup = () => {
                 onChange={handleChange}
                 variant="standard"
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {nameError}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6} md={3} lg={12}>
               <TextField
@@ -83,6 +107,9 @@ const Signup = () => {
                 onChange={handleChange}
                 variant="standard"
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {emailError}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6} md={3} lg={12}>
               <TextField
@@ -95,6 +122,9 @@ const Signup = () => {
                 onChange={handleChange}
                 variant="standard"
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {passwordError}
+              </Typography>
             </Grid>
             <Grid
               sx={{

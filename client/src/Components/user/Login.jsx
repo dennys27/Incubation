@@ -1,4 +1,4 @@
-import { Box, Button, Container, Grid, TextField } from "@mui/material";
+import { Box, Button, Container, Grid, TextField, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -8,6 +8,7 @@ import "./Signup.css";
 import { useState } from "react";
 import { AuthContext } from "../../Store/context";
 import { useContext } from "react";
+import validator from 'validator';
 
 const Login = () => {
   const { setUser } = useContext(AuthContext);
@@ -17,33 +18,43 @@ const Login = () => {
      password: "",
   };
   
-
+   const [emailError, setEmailError] = useState("");
+   const [passwordError, setPasswordError] = useState("");
    const [login, setLogin] = useState(formvalues);
 
    const handleChange = (e) => {
      setLogin({ ...login, [e.target.name]: e.target.value });
-   };
+  };
+  
+  
 
-   const handleSubmit = () => {
-     console.log("im working");
-     axios
-       .post("http://localhost:8000/login", login)
-       .then((res) => {
-        
-         localStorage.setItem("token", res.data);
-         console.log(res.data.user);
-         if (res.data.user) {
-           localStorage.setItem("user", JSON.stringify(res.data.user));
-           let use = localStorage.getItem("user")
-           console.log(use,"llllllllllllllllllll");
-           setUser(res.data.user);
-           navigate("/");
-         }
-         
-       })
-       .catch((error) => {
-         console.log(error);
-       });
+  const handleSubmit = () => {
+    if (login.password === "") {
+       setPasswordError("enter a valid password")
+     }
+    if (!validator.isEmail(login.email)) {
+       console.log("yes im here.....");
+       setEmailError("Enter valid Email!");
+     } else {
+       
+        console.log("im working");
+        axios
+          .post("http://localhost:8000/login", login)
+          .then((res) => {
+            localStorage.setItem("token", res.data);
+
+            if (res.data.user) {
+              localStorage.setItem("user", JSON.stringify(res.data.user));
+              setUser(res.data.user);
+              navigate("/");
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+       
+     }
+     
    };
 
   return (
@@ -72,7 +83,7 @@ const Login = () => {
                 <AccountCircleIcon sx={{ fontSize: 40 }} />
               </Box>
             </Grid>
-           
+
             <Grid item xs={12} sm={6} md={3} lg={12}>
               <TextField
                 id="outlined-email"
@@ -83,6 +94,9 @@ const Login = () => {
                 onChange={handleChange}
                 variant="standard"
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {emailError}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6} md={3} lg={12}>
               <TextField
@@ -95,6 +109,9 @@ const Login = () => {
                 onChange={handleChange}
                 variant="standard"
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {passwordError}
+              </Typography>
             </Grid>
             <Grid
               sx={{

@@ -36,7 +36,7 @@ const Table = ({ application, setSelected }) => {
 
   useEffect(() => {
     
-  },[refresh])
+  },[applications])
   
   const handleOpen = (id) => {
   
@@ -71,7 +71,7 @@ const Table = ({ application, setSelected }) => {
         <Tablee aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell align="center">Sl.no</TableCell>
+              <TableCell align="center">Applicant Name</TableCell>
               <TableCell align="center">Company Name</TableCell>
               <TableCell align="center">Comapany Details</TableCell>
             </TableRow>
@@ -112,10 +112,28 @@ const Table = ({ application, setSelected }) => {
       >
         <Box sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
-            Details
+            Company Details
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            CompanyName:{modal.name}
+            Name:{modal.name}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            CompanyName:{modal.CompanyName}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Address:{modal.Address}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            City:{modal.City}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            State:{modal.State}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Email:{modal.Email}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Phone:{modal.Phone}
           </Typography>
         </Box>
       </Modal>
