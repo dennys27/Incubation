@@ -34,11 +34,10 @@ const Table = ({ application, setSelected }) => {
   const [open, setOpen] = React.useState(false);
   const { applications } = useContext(ApplicationContext);
 
-  useEffect(() => {
-    
-  },[applications])
+  useEffect(() => {}, [application]);
   
   const handleOpen = (id) => {
+    
   
     applications.map(async(data) => {
       if (data._id === id) {

@@ -24,13 +24,13 @@ const AdminLogin = () => {
   };
 
   const handleSubmit = () => { 
-    console.log("im working");
+   
     axios
       .post("http://localhost:8000/adminlogin", login)
         .then((res) => {
-          console.log(res.data,"daaaaaaaaaaataaaaaaa");
+       
         localStorage.setItem("token", res.data);
-        console.log(res.data) 
+    
             if (res.data.status) {
              localStorage.setItem("admin", res.data.admin);
           setAdmin(res.data.user);

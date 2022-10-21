@@ -34,8 +34,10 @@ const Bookingslots = () => {
   const [companies, setCompanies] = useState([]);
   const [choosen, setChoosen] = useState('not choosen');
   const [organization, setOrganization] = useState('');
+  const [blocked, setBlocked] = useState([]);
 
   const [open, setOpen] = useState(false);
+  const [sopen, setSopen] = useState(false);
  
   useEffect(() => {
   axios.get("http://localhost:8000/slots").then((mydata) => {
@@ -57,12 +59,21 @@ const Bookingslots = () => {
   const handleModal = async (e) => {
 
     await axios.post("http://localhost:8000/setslot", { CompanyName: e.target.value, Slot: choosen }).then(() => {
-      console.log("yoooooo");
+     
       setOpen(false)
       
-       
+      setChoosen("")
     })
 
+  }
+
+  const handleBooked = async(userId) => {
+    axios.post("http://localhost:8000/blockedslot", { userId: userId }).then((data) => {
+      
+      setBlocked(data.data)
+     
+      setSopen(true)
+    })
   }
 
 
@@ -72,6 +83,7 @@ const Bookingslots = () => {
   }
   
    const handleClose = () => setOpen(false);
+   const handleClosed = () => setSopen(false);
 
   return (
     <>
@@ -82,7 +94,7 @@ const Bookingslots = () => {
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
         {slot.map((data) => {
-          console.log(data,"ggggggggg");
+         
           return (
             <Grid key={data._id} item xs={1}>
               {data.companyId === "" ? (
@@ -102,8 +114,8 @@ const Bookingslots = () => {
                   <h5>{data.name}</h5>
                 </div>
               ) : (
-                <div 
-                  
+                <div
+                  onClick={() => handleBooked(data.companyId)}
                   style={{
                     backgroundColor: "#0d47a1",
                     color: "white",
@@ -119,9 +131,33 @@ const Bookingslots = () => {
               )}
             </Grid>
           );
-       
         })}
       </Grid>
+
+      <Modal
+        open={sopen}
+        onClose={handleClosed}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Box sx={style}>
+          <Typography id="modal-modal-title" variant="h6" component="h2">
+            Companyname :{blocked[0]?.CompanyName}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+           Address :{blocked[0]?.Address}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+           City :{blocked[0]?.City}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Email :{blocked[0]?.Email}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Phone :{blocked[0]?.Phone}
+          </Typography>
+        </Box>
+      </Modal>
 
       <Modal
         aria-labelledby="transition-modal-title"
@@ -143,7 +179,9 @@ const Bookingslots = () => {
               sx={{ m: 1, minWidth: 120, color: "white" }}
               size="small"
             >
-              <InputLabel sx={{color:"white"}} id="demo-select-small">select</InputLabel>
+              <InputLabel sx={{ color: "white" }} id="demo-select-small">
+                select
+              </InputLabel>
               <Select
                 labelId="demo-select-small"
                 id="demo-select-small"
@@ -161,7 +199,7 @@ const Bookingslots = () => {
         </Fade>
       </Modal>
     </>
-  )
+  );
 }
 
 export default Bookingslots

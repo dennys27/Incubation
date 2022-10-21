@@ -13,7 +13,9 @@ import Badge from "@mui/material/Badge";
 import MailIcon from "@mui/icons-material/Mail";
 import React from "react";
 import { useState } from "react";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { ApplicationContext } from "../../Store/applications";
+import { useContext } from "react";
 
 const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -49,8 +51,16 @@ const AdminNavbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("admin");
     navigate("/admin/login")
-    
   }
+
+  // let notifications=0;
+  // const { applications } = useContext(ApplicationContext);
+  // applications?.map((data) => {
+  //   if (data.View == false) {
+  //     notifications+=1
+  //   }
+  //  })
+
   return (
     <AppBar position="sticky" sx={{ backgroundColor: "#212121" }}>
       <StyledToolbar>

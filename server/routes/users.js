@@ -82,6 +82,14 @@ router.post("/application",async (req, res) => {
   await new Application(req.body).save() 
   res.json({ status: true })
 })
+router.post("/blockedslot",async (req, res) => {
+    console.log(req.body,"hhhhhhhhh");
+  await Application.find({ _id: req.body.userId }).then((data) => {
+    console.log(data,"aaaaaaaaaaaaa");
+     res.json(data);
+  }) 
+ 
+})
  
 router.get("/slots",async (req, res) => { 
   const slots = await Slot.find();

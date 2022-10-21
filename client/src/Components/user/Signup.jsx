@@ -45,7 +45,6 @@ const Signup = () => {
       setEmailError("Enter valid Email!");
     } else {
 
-      console.log("im working");
       axios
         .post("http://localhost:8000/signup", signup)
         .then((res) => {

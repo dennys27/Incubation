@@ -15,11 +15,11 @@ const Applicantlist = ({ setSelected }) => {
     
     axios.get("http://localhost:8000/applications").then((appl) => {
     const {data}=appl
-      setApplication(data);
       setApplications(data)
-    console.log(data, "im working you know..........");
-  });
-  },[applications])
+      setApplication(data);
+   
+  })
+  },[])
 
 
   return (
