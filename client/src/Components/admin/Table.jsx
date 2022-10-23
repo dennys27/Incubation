@@ -9,6 +9,8 @@ import Paper from "@mui/material/Paper";
 import { Box, Button, Modal, Typography } from "@mui/material";
 import { ApplicationContext } from "../../Store/applications";
 import axios from 'axios';
+import { adminUrl } from "../../Constants/Constants";
+
 
 
 
@@ -28,18 +30,20 @@ const style = {
 
 
 
-const Table = ({ application, setSelected }) => {
+const Table = ({ application, setSelected ,setTest}) => {
   let refresh=false
   const [modal, setModal] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const { applications } = useContext(ApplicationContext);
 
-  useEffect(() => {}, [application]);
+  useEffect(() => {
+   
+  }, [applications]);
   
   const handleOpen = (id) => {
-    
+    setTest("testing....")
   
-    applications.map(async(data) => {
+    application.map(async(data) => {
       if (data._id === id) {
        
         setModal(data);
@@ -53,12 +57,17 @@ const Table = ({ application, setSelected }) => {
   }
 
   const handleClose = () => setOpen(false);
-  
+   let token = localStorage.getItem("Admintoken");
   const setOpened = async(id) => {
-   await axios.post("http://localhost:8000/changeview",{id:id});
+    await axios.post(
+      `${adminUrl}/changeview`,
+      { id: id },
+      {
+        headers: { token: `Bearer ${token}` },
+      }
+    );
+   
   }
-
- 
   
   return (
     <>

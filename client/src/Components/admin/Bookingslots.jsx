@@ -12,6 +12,7 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
+import { adminUrl } from '../../Constants/Constants';
 
 
 
@@ -35,45 +36,68 @@ const Bookingslots = () => {
   const [choosen, setChoosen] = useState('not choosen');
   const [organization, setOrganization] = useState('');
   const [blocked, setBlocked] = useState([]);
-
   const [open, setOpen] = useState(false);
   const [sopen, setSopen] = useState(false);
- 
+
+  
+   let token = localStorage.getItem("Admintoken");
   useEffect(() => {
-  axios.get("http://localhost:8000/slots").then((mydata) => {
-    const { data } = mydata
-    rooms = data;
-  }).then(() => {
-       setSlots(rooms);
-  })
+  axios
+    .get(`${adminUrl}/slots`, {
+      headers: { token: `Bearer ${token}` },
+    })
+    .then((mydata) => {
+      const { data } = mydata;
+      rooms = data;
+    })
+    .then(() => {
+      setSlots(rooms);
+    });
     
-    axios.get("http://localhost:8000/approvedcompanies").then((Cdata) => {
-      const { data } = Cdata;
-      setCompanies(data)
-     
-    });  
+    axios
+      .get(`${adminUrl}/approvedcompanies`, {
+        headers: { token: `Bearer ${token}` },
+      })
+      .then((Cdata) => {
+        const { data } = Cdata;
+        setCompanies(data);
+      });  
     
   }, [choosen])
 
 
   const handleModal = async (e) => {
 
-    await axios.post("http://localhost:8000/setslot", { CompanyName: e.target.value, Slot: choosen }).then(() => {
-     
-      setOpen(false)
-      
-      setChoosen("")
-    })
+    await axios
+      .post(
+        `${adminUrl}/setslot`,
+        { CompanyName: e.target.value, Slot: choosen },
+        {
+          headers: { token: `Bearer ${token}` },
+        }
+      )
+      .then(() => {
+        setOpen(false);
+
+        setChoosen("");
+      });
 
   }
 
   const handleBooked = async(userId) => {
-    axios.post("http://localhost:8000/blockedslot", { userId: userId }).then((data) => {
-      
-      setBlocked(data.data)
-     
-      setSopen(true)
-    })
+    axios
+      .post(
+        `${adminUrl}/blockedslot`,
+        { userId: userId },
+        {
+          headers: { token: `Bearer ${token}` },
+        }
+      )
+      .then((data) => {
+        setBlocked(data.data);
+
+        setSopen(true);
+      });
   }
 
 

@@ -33,16 +33,17 @@ const Login = () => {
        setPasswordError("enter a valid password")
      }
     if (!validator.isEmail(login.email)) {
-       console.log("yes im here.....");
+       
        setEmailError("Enter valid Email!");
      } else {
        
-        console.log("im working");
+    
         axios
           .post("http://localhost:8000/login", login)
           .then((res) => {
-            localStorage.setItem("token", res.data);
-
+            console.log(res.data.token,"kkkkkk");
+            localStorage.setItem("token", res.data.token);
+            console.log(res.data.user,"iiiiiiiiiiiiii");
             if (res.data.user) {
               localStorage.setItem("user", JSON.stringify(res.data.user));
               setUser(res.data.user);

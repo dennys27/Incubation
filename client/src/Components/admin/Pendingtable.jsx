@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Tablee from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -8,11 +8,24 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Button, Typography } from "@mui/material";
 import axios from 'axios'
+import { adminUrl } from "../../Constants/Constants";
 
-const Pendingtable = ({ application }) => {
+const Pendingtable = ({ application, setTest,applications,setApplications }) => {
+  useEffect(() => {
+     
+  }, [setTest])
+  
+   let token = localStorage.getItem("Admintoken");
   
   const setApprovel = (id) => {
-      axios.post("http://localhost:8000/setapprovel",{id:id})
+    axios.post(
+      `${adminUrl}/setapprovel`,
+      { id: id },
+      {
+        headers: { token: `Bearer ${token}` },
+      }
+    );
+    setTest("testinnggg") 
   }
 
   return (
@@ -32,7 +45,7 @@ const Pendingtable = ({ application }) => {
           </TableHead>
           <TableBody>
             {application.map((row) =>
-              row.View==true && row.Status=="pending"? (
+              row.View===true && row.Status==="pending"? (
                 <TableRow key={row._id}>
                   <TableCell align="center" component="th" scope="row">
                     {row.name}

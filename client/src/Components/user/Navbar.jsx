@@ -1,12 +1,13 @@
 import React, { useContext } from 'react'
+import LogoutIcon from "@mui/icons-material/Logout";
 import './Navbar.css';
 import Box from "@mui/material/Box";
 import MenuIcon from "@mui/icons-material/Menu";
-import { AppBar, Button, IconButton, Toolbar, Typography } from '@mui/material';
+import { AppBar, Badge, Button, IconButton, Toolbar, Typography } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../Store/context';
 import { OpenInFull } from '@mui/icons-material';
-
+import { Notifications, Pets } from "@mui/icons-material";
 
 const Navbar = () => {
   const { user, setUser } = useContext(AuthContext);
@@ -38,8 +39,22 @@ const Navbar = () => {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-                <Link style={{textDecoration:"none",color:"white"}} to="/"> Reva Nests</Link>
+                <Link style={{ textDecoration: "none", color: "white" }} to="/">
+                  {" "}
+                  Reva Nests
+                </Link>
               </Typography>
+              {user ? (
+                <Badge
+                  sx={{ marginLeft: 2, marginRight: 2 }}
+                  badgeContent={0}
+                  color="error"
+                >
+                  <Notifications />
+                </Badge>
+              ) : (
+                ""
+              )}
               {user ? `Welcome ${user.name}` : ""}
 
               {user ? (

@@ -53,13 +53,13 @@ const AdminNavbar = () => {
     navigate("/admin/login")
   }
 
-  // let notifications=0;
-  // const { applications } = useContext(ApplicationContext);
-  // applications?.map((data) => {
-  //   if (data.View == false) {
-  //     notifications+=1
-  //   }
-  //  })
+  let notifications=0;
+  const { applications } = useContext(ApplicationContext);
+  applications?.map((data) => {
+    if (data.View == false) {
+      notifications+=1
+    }
+   })
 
   return (
     <AppBar position="sticky" sx={{ backgroundColor: "#212121" }}>
@@ -70,7 +70,7 @@ const AdminNavbar = () => {
         <Pets sx={{ display: { xs: "block", sm: "none" } }} />
       
         <Icons>
-          <Badge badgeContent={4} color="error">
+          <Badge badgeContent={notifications} color="error">
             <MailIcon />
           </Badge>
           <Badge badgeContent={4} color="error">

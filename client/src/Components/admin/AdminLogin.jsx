@@ -8,6 +8,11 @@ import "../user/Signup.css";
 import { useState } from "react";
 import { AdminContext } from "../../Store/Admin";
 import { useContext } from "react";
+import { adminUrl } from "../../Constants/Constants";
+
+
+
+console.log(adminUrl,"yoooooooo");
 
 const AdminLogin = () => {
   const { setAdmin } = useContext(AdminContext);
@@ -26,13 +31,12 @@ const AdminLogin = () => {
   const handleSubmit = () => { 
    
     axios
-      .post("http://localhost:8000/adminlogin", login)
-        .then((res) => {
-       
-        localStorage.setItem("token", res.data);
-    
-            if (res.data.status) {
-             localStorage.setItem("admin", res.data.admin);
+      .post(`${adminUrl}/login`, login)
+      .then((res) => {
+        localStorage.setItem("Admintoken", res.data.AdminToken);
+
+        if (res.data.status) {
+          localStorage.setItem("admin", res.data.admin);
           setAdmin(res.data.user);
           navigate("/admin");
         }
