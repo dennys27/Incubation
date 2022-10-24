@@ -5,10 +5,11 @@ import Pendingtable from './Pendingtable';
 import { useContext } from "react";
 import {ApplicationContext} from '../../Store/applications'
 import { adminUrl } from '../../Constants/Constants';
+import { useNavigate } from 'react-router-dom';
 
 
 const Applicantlist = ({ setSelected }) => {
-  
+  let navigate = useNavigate()
   const {applications, setApplications } = useContext(ApplicationContext);
 
   const [test, setTest] = useState([])
@@ -23,7 +24,12 @@ const Applicantlist = ({ setSelected }) => {
         const { data } = appl;
         setApplications(data);
         setApplication(data);
-      });
+      }).catch((data) => {
+         localStorage.removeItem("admin");
+         localStorage.removeItem("Admintoken");
+         navigate("/admin/login");
+        console.log(data,"error occured........");
+      })
   }, [test]);
 
 

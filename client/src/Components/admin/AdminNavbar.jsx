@@ -50,13 +50,14 @@ const AdminNavbar = () => {
   const navigate = useNavigate()
   const handleLogout = () => {
     localStorage.removeItem("admin");
+    localStorage.removeItem("Admintoken");
     navigate("/admin/login")
   }
 
   let notifications=0;
   const { applications } = useContext(ApplicationContext);
   applications?.map((data) => {
-    if (data.View == false) {
+    if (data.View === false) {
       notifications+=1
     }
    })
@@ -73,7 +74,7 @@ const AdminNavbar = () => {
           <Badge badgeContent={notifications} color="error">
             <MailIcon />
           </Badge>
-          <Badge badgeContent={4} color="error">
+          <Badge badgeContent={0} color="error">
             <Notifications />
           </Badge>
           <Avatar

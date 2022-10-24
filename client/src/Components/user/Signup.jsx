@@ -24,6 +24,7 @@ const Signup = () => {
      const [nameError, setNameError] = useState("");
      const [emailError, setEmailError] = useState("");
      const [passwordError, setPasswordError] = useState("");
+     const [existing, setExisting] = useState("");
     
   const handleChange = (e) => {
   
@@ -48,7 +49,13 @@ const Signup = () => {
       axios
         .post("http://localhost:8000/signup", signup)
         .then((res) => {
-         navigate("/login")
+         
+          if (res.data.exists) {
+           setExisting(res.data.message)
+          } else {
+             navigate("/login");
+         }
+        
         })
         .catch((error) => {
           //console.log(error);
@@ -108,6 +115,9 @@ const Signup = () => {
               />
               <Typography sx={{ color: "red", fontSize: "12px" }}>
                 {emailError}
+              </Typography>
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {existing}
               </Typography>
             </Grid>
             <Grid item xs={12} sm={6} md={3} lg={12}>

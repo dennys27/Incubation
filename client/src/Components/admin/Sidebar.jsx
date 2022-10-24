@@ -15,7 +15,10 @@ import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
 import Person2Icon from "@mui/icons-material/Person2";
 import { Home } from "@mui/icons-material";
 import React from "react";
- 
+import ReceiptLongIcon from "@mui/icons-material/ReceiptLong";
+import AppsIcon from "@mui/icons-material/Apps";
+import HistoryEduIcon from "@mui/icons-material/HistoryEdu";
+
 const Sidebar = ({ setSelected }) => {
  
   return (
@@ -33,7 +36,7 @@ const Sidebar = ({ setSelected }) => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <Home sx={{ color: "white" }} />
+                <HistoryEduIcon sx={{ color: "white" }} />
               </ListItemIcon>
               <ListItemText
                 onClick={() => {
@@ -47,7 +50,7 @@ const Sidebar = ({ setSelected }) => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <WorkspacesIcon sx={{ color: "white" }} />
+                <AppsIcon sx={{ color: "white" }} />
               </ListItemIcon>
               <ListItemText
                 onClick={() => {
@@ -60,7 +63,7 @@ const Sidebar = ({ setSelected }) => {
           <ListItem disablePadding>
             <ListItemButton component="a" href="#">
               <ListItemIcon>
-                <StoreIcon sx={{ color: "white" }} />
+                <ReceiptLongIcon sx={{ color: "white" }} />
               </ListItemIcon>
               <ListItemText
                 onClick={() => {

@@ -129,7 +129,12 @@ const Application = () => {
               }, 2500);
             })
             .catch((error) => {
-              console.log(error);
+             
+         localStorage.removeItem("user");
+         localStorage.removeItem("token");
+         navigate("/login");
+        console.log(error,"error occured........");
+   
             });
         }
      };
@@ -138,6 +143,7 @@ const Application = () => {
   return (
     <>
       <Navbar />
+
       <div className="signup_form_outer">
         <Box
           mt={5}
@@ -145,6 +151,7 @@ const Application = () => {
           noValidate
           autoComplete="off"
         >
+          <Typography variant='h6' sx={{marginBottom:2,color:"gray"}}>REGISTRATION FORM</Typography>
           <Grid
             container
             rowSpacing={3}

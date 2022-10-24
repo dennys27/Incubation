@@ -13,6 +13,8 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { adminUrl } from '../../Constants/Constants';
+import { useNavigate } from 'react-router-dom';
+
 
 
 
@@ -23,10 +25,11 @@ const style = {
   left: "50%",
   transform: "translate(-50%, -50%)",
   width: 400,
-  bgcolor: "rgb(10, 95, 223)",
-  color:"white",
+  bgcolor: "#e3f2fd",
+  color: "black",
   boxShadow: 24,
   p: 4,
+  borderRadius:1
 };
 
 let rooms;
@@ -38,7 +41,7 @@ const Bookingslots = () => {
   const [blocked, setBlocked] = useState([]);
   const [open, setOpen] = useState(false);
   const [sopen, setSopen] = useState(false);
-
+  const navigate = useNavigate()
   
    let token = localStorage.getItem("Admintoken");
   useEffect(() => {
@@ -52,6 +55,12 @@ const Bookingslots = () => {
     })
     .then(() => {
       setSlots(rooms);
+    })
+    .catch((data) => {
+      localStorage.removeItem("admin");
+      localStorage.removeItem("Admintoken");
+      navigate("/admin/login");
+      console.log(data, "error occured........");
     });
     
     axios
@@ -61,7 +70,13 @@ const Bookingslots = () => {
       .then((Cdata) => {
         const { data } = Cdata;
         setCompanies(data);
-      });  
+      })
+      .catch((data) => {
+        localStorage.removeItem("admin");
+        localStorage.removeItem("Admintoken");
+        navigate("/admin/login");
+        console.log(data, "error occured........");
+      });
     
   }, [choosen])
 
@@ -180,6 +195,9 @@ const Bookingslots = () => {
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Phone :{blocked[0]?.Phone}
           </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            Status :{blocked[0]?.Status}
+          </Typography>
         </Box>
       </Modal>
 
@@ -200,10 +218,10 @@ const Bookingslots = () => {
               Approved Companies
             </Typography>
             <FormControl
-              sx={{ m: 1, minWidth: 120, color: "white" }}
+              sx={{ m: 1, minWidth: 120, color: "black" }}
               size="small"
             >
-              <InputLabel sx={{ color: "white" }} id="demo-select-small">
+              <InputLabel sx={{ color: "black" }} id="demo-select-small">
                 select
               </InputLabel>
               <Select

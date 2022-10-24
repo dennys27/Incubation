@@ -28,6 +28,17 @@ const Pendingtable = ({ application, setTest,applications,setApplications }) => 
     setTest("testinnggg") 
   }
 
+  const setDecline = (id) => {
+    axios.post(
+      `${adminUrl}/setdecline`,
+      { id: id },
+      {
+        headers: { token: `Bearer ${token}` },
+      }
+    );
+    setTest("testinnggg") 
+  }
+
   return (
     <>
       <Typography m={4} variant="h5">
@@ -68,7 +79,9 @@ const Pendingtable = ({ application, setTest,applications,setApplications }) => 
                     </Button>
                   </TableCell>
                   <TableCell align="center">
-                    <Button variant="contained" href="#contained-buttons">
+                    <Button onClick={() => {
+                      setDecline(row._id);
+                    }} variant="contained" href="#contained-buttons">
                       Decline
                     </Button>
                   </TableCell>

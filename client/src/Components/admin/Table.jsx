@@ -10,6 +10,7 @@ import { Box, Button, Modal, Typography } from "@mui/material";
 import { ApplicationContext } from "../../Store/applications";
 import axios from 'axios';
 import { adminUrl } from "../../Constants/Constants";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -35,7 +36,8 @@ const Table = ({ application, setSelected ,setTest}) => {
   const [modal, setModal] = React.useState([]);
   const [open, setOpen] = React.useState(false);
   const { applications } = useContext(ApplicationContext);
-
+  const navigate = useNavigate();
+  
   useEffect(() => {
    
   }, [applications]);
@@ -59,13 +61,20 @@ const Table = ({ application, setSelected ,setTest}) => {
   const handleClose = () => setOpen(false);
    let token = localStorage.getItem("Admintoken");
   const setOpened = async(id) => {
-    await axios.post(
-      `${adminUrl}/changeview`,
-      { id: id },
-      {
-        headers: { token: `Bearer ${token}` },
-      }
-    );
+    await axios
+      .post(
+        `${adminUrl}/changeview`,
+        { id: id },
+        {
+          headers: { token: `Bearer ${token}` },
+        }
+      )
+      .catch((data) => {
+        localStorage.removeItem("admin");
+        localStorage.removeItem("Admintoken");
+        navigate("/admin/login");
+        console.log(data, "error occured........");
+      });
    
   }
   

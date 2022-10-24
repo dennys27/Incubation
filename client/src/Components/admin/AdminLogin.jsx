@@ -1,4 +1,4 @@
-import { Box, Button, Grid, TextField } from "@mui/material";
+import { Box, Button, Grid, TextField, Typography } from "@mui/material";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { useNavigate } from "react-router-dom";
 import React from "react";
@@ -9,41 +9,62 @@ import { useState } from "react";
 import { AdminContext } from "../../Store/Admin";
 import { useContext } from "react";
 import { adminUrl } from "../../Constants/Constants";
+import validator from "validator";
+import { useEffect } from "react";
 
 
 
-console.log(adminUrl,"yoooooooo");
 
 const AdminLogin = () => {
   const { setAdmin } = useContext(AdminContext);
   const navigate = useNavigate();
+  let token = localStorage.getItem("admin");
+   useEffect(() => {
+     
+     if (token) {
+       navigate("/admin")
+     }
+   }, []);
   const formvalues = {
     email: "",
     password: "",
   };
 
   const [login, setLogin] = useState(formvalues);
+  const [invalid, setInvalid] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
   const handleChange = (e) => {
     setLogin({ ...login, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = () => { 
+    if (!validator.isEmail(login.email)) {
+      setEmailError("Enter valid Email!");
+    } else if (login.password === "") {
+      setPasswordError("invalid pasword")
+    } else {
+     
    
-    axios
-      .post(`${adminUrl}/login`, login)
-      .then((res) => {
-        localStorage.setItem("Admintoken", res.data.AdminToken);
-
-        if (res.data.status) {
-          localStorage.setItem("admin", res.data.admin);
-          setAdmin(res.data.user);
-          navigate("/admin");
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+      axios
+        .post(`${adminUrl}/login`, login)
+        .then((res) => {
+          if (res.data.Estatus) {
+            setInvalid(res.data.message)
+          }
+          
+          else if (res.data.status) {
+            localStorage.setItem("Admintoken", res.data.AdminToken);
+            localStorage.setItem("admin", res.data.admin);
+            setAdmin(res.data.user);
+            navigate("/admin");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 
   return (
@@ -83,6 +104,9 @@ const AdminLogin = () => {
                 onChange={handleChange}
                 variant="standard"
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {emailError}
+              </Typography>
             </Grid>
             <Grid item xs={12} sm={6} md={3} lg={12}>
               <TextField
@@ -95,6 +119,12 @@ const AdminLogin = () => {
                 onChange={handleChange}
                 variant="standard"
               />
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {passwordError}
+              </Typography>
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {invalid}
+              </Typography>
             </Grid>
             <Grid
               sx={{

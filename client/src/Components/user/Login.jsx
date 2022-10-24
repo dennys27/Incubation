@@ -9,10 +9,19 @@ import { useState } from "react";
 import { AuthContext } from "../../Store/context";
 import { useContext } from "react";
 import validator from 'validator';
+import { useEffect } from "react";
 
 const Login = () => {
+  const navigate = useNavigate();
   const { setUser } = useContext(AuthContext);
-   const navigate = useNavigate();
+  
+  let token = localStorage.getItem("user");
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, []);
+  
    const formvalues = {
      email: "",
      password: "",
@@ -20,6 +29,7 @@ const Login = () => {
   
    const [emailError, setEmailError] = useState("");
    const [passwordError, setPasswordError] = useState("");
+   const [invalid, setInvalid] = useState("");
    const [login, setLogin] = useState(formvalues);
 
    const handleChange = (e) => {
@@ -32,7 +42,7 @@ const Login = () => {
     if (login.password === "") {
        setPasswordError("enter a valid password")
      }
-    if (!validator.isEmail(login.email)) {
+    if(!validator.isEmail(login.email)) {
        
        setEmailError("Enter valid Email!");
      } else {
@@ -41,9 +51,11 @@ const Login = () => {
         axios
           .post("http://localhost:8000/login", login)
           .then((res) => {
-            console.log(res.data.token,"kkkkkk");
+            if (res.data.invalid) {
+              setInvalid(res.data.message)
+            }
+            
             localStorage.setItem("token", res.data.token);
-            console.log(res.data.user,"iiiiiiiiiiiiii");
             if (res.data.user) {
               localStorage.setItem("user", JSON.stringify(res.data.user));
               setUser(res.data.user);
@@ -112,6 +124,9 @@ const Login = () => {
               />
               <Typography sx={{ color: "red", fontSize: "12px" }}>
                 {passwordError}
+              </Typography>
+              <Typography sx={{ color: "red", fontSize: "12px" }}>
+                {invalid}
               </Typography>
             </Grid>
             <Grid

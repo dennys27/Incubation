@@ -29,12 +29,13 @@ router.post('/signup', async (req, res, next) => {
   try {
     const { error } = validate(req.body)
       console.log(error);
-    if (error) {
+    if (error) {  
       return res.status(400).send({message:error.details[0].message})
     }
     const user = await User.findOne({ email: req.body.email })
     if (user) {
-      return res.status(409).send({message:"User with same email already exists"})
+      console.log("youuuuuuuuuuuu");
+      return res.send({message:"User with same email already exists",exists:true})
     }
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
@@ -60,13 +61,14 @@ router.post("/login", async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     
     if (!user) {
-      return res.status(401).send({ message: "Invalid Email or Password" });
+      return res.send({ message: "Invalid Email or Password" ,invalid:true });
     }
 			
 		const validPassword = await bcrypt.compare(
 			req.body.password,
 			user.password
     ); 
+    
     if (!validPassword) {
       return res.status(401).send({ message: "Invalid Email or Password" });
     }
@@ -105,7 +107,7 @@ router.get("/admin/slots", AdminVerifyToken, async (req, res) => {
 
 router.get("/admin/applications", AdminVerifyToken, async (req, res) => {
   console.log("im being hittt");
-  const applications = await Application.find();
+  const applications = await (await Application.find()).reverse();
   res.send(applications);
 });
 
@@ -122,6 +124,13 @@ router.post("/admin/changeview", AdminVerifyToken, async (req, res) => {
 
 
 
+router.post("/admin/setdecline", AdminVerifyToken, async (req, res) => {
+  await Application.findOneAndUpdate(
+    { _id: req.body.id },
+    { Status: "declined" },
+    { upsert: true }
+  );
+});
 router.post("/admin/setapprovel", AdminVerifyToken, async (req, res) => {
   await Application.findOneAndUpdate(
     { _id: req.body.id },
@@ -154,10 +163,10 @@ router.post("/admin/setslot", AdminVerifyToken, async (req, res) => {
 
 router.post("/admin/login", async (req, res) => {
   
-  const admin = await Admin.find({ email: req.body.email });
- 
-  if (admin === null) {
-    res.send({ status: false,message:"invalid username or password" });
+  const admin = await Admin.find({ email: req.body.email ,password:req.body.password});
+  console.log(admin,"ggggggggggg");
+  if (admin.length === 0) {
+    res.send({ Estatus: true,message:"invalid username or password" });
   } else {
      const token = await generateAuthToken();
     res
