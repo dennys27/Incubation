@@ -19,34 +19,35 @@ const validatelog = (data) => {
   return schema.validate(data);
 };
 
-// /* GET home page. */
-// router.get('/', function(req, res, next) {
-//   res.json({name:"dennys"});
-// });
+
 
 router.post('/signup', async (req, res, next) => {
 
   try {
     const { error } = validate(req.body)
-      console.log(error);
+
+    console.log(error);
+    
     if (error) {  
       return res.status(400).send({message:error.details[0].message})
     }
+
+
     const user = await User.findOne({ email: req.body.email })
     if (user) {
-      console.log("youuuuuuuuuuuu");
       return res.send({message:"User with same email already exists",exists:true})
     }
+
     const salt = await bcrypt.genSalt(Number(process.env.SALT));
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
    
     await new User({ ...req.body, password: hashedPassword }).save()
-    res.status(201).send({message:"User created successfully"})
+    res.status(201).send({ message: "User created successfully" })
+    
   } catch (error) {
     console.log(error);
     res.status(500).send({message:"Internal server error"})
   }
-  console.log(req.body); 
 }); 
 
 
@@ -106,7 +107,6 @@ router.get("/admin/slots", AdminVerifyToken, async (req, res) => {
 
 
 router.get("/admin/applications", AdminVerifyToken, async (req, res) => {
-  console.log("im being hittt");
   const applications = await (await Application.find()).reverse();
   res.send(applications);
 });
@@ -131,6 +131,10 @@ router.post("/admin/setdecline", AdminVerifyToken, async (req, res) => {
     { upsert: true }
   );
 });
+
+
+
+
 router.post("/admin/setapprovel", AdminVerifyToken, async (req, res) => {
   await Application.findOneAndUpdate(
     { _id: req.body.id },
@@ -140,9 +144,12 @@ router.post("/admin/setapprovel", AdminVerifyToken, async (req, res) => {
 });
 
 
+
 router.get("/admin/approvedcompanies", AdminVerifyToken, async (req, res) => {
   res.send(await Application.find({ Status: "approved" }));
 });
+
+
 
 
 router.post("/admin/setslot", AdminVerifyToken, async (req, res) => {
@@ -161,10 +168,12 @@ router.post("/admin/setslot", AdminVerifyToken, async (req, res) => {
   res.send({ status: "success" });
 });
 
+
+
 router.post("/admin/login", async (req, res) => {
   
-  const admin = await Admin.find({ email: req.body.email ,password:req.body.password});
-  console.log(admin,"ggggggggggg");
+  const admin = await Admin.find({ email: req.body.email, password: req.body.password });
+  
   if (admin.length === 0) {
     res.send({ Estatus: true,message:"invalid username or password" });
   } else {
@@ -177,7 +186,6 @@ router.post("/admin/login", async (req, res) => {
         admin,
         status: true,
       });
-    //res.send({ status: true, admin });
   }
 });
    

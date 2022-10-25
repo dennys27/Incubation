@@ -13,7 +13,7 @@ const PrivateRoute = () => {
       
       }
 
-    return token2 ? <Outlet /> : <Navigate to="/admin/login" />;
+    return token2 ? <Outlet/> : <Navigate to="/admin/login" />;
 };
 
 export default PrivateRoute;

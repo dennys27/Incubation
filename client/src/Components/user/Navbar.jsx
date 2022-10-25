@@ -1,5 +1,4 @@
 import React, { useContext } from 'react'
-import LogoutIcon from "@mui/icons-material/Logout";
 import './Navbar.css';
 import Box from "@mui/material/Box";
 import MenuIcon from "@mui/icons-material/Menu";

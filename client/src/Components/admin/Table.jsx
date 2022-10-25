@@ -16,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 
 
+
 const style = {
   position: "absolute",
   top: "50%",
@@ -24,9 +25,12 @@ const style = {
   width: 500,
   height:400,
   bgcolor: "background.paper",
- 
+  overflow: "scroll",
+  overflowX:"hidden",
+  scrollBehavior: "smooth",
   boxShadow: 24,
   p: 4,
+  borderRadius:1
 };
 
 
@@ -94,31 +98,34 @@ const Table = ({ application, setSelected ,setTest}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {application.map((row) => (
-              !row.View?
-              <TableRow key={row._id}>
-                <TableCell align="center" component="th" scope="row">
-                  {row.name}
-                </TableCell>
-                <TableCell align="center">{row.CompanyName}</TableCell>
-                <TableCell align="center">
-                  <p> {row.Address}</p>
-                  <p> {row.City}</p>
-                  <p> {row.Email}</p>
-                </TableCell>
-                <TableCell align="center">
-                  <Button
-                    onClick={()=>handleOpen(row._id)}
-                    variant="contained"
-                    href="#contained-buttons"
-                  >
-                    View
-                  </Button>
-                </TableCell>
-              </TableRow>:""
-            ))}
+            {application.map((row) =>
+              !row.View ? (
+                <TableRow key={row._id}>
+                  <TableCell align="center" component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="center">{row.CompanyName}</TableCell>
+                  <TableCell align="center">
+                    <p> {row.Address}</p>
+                    <p> {row.City}</p>
+                    <p> {row.Email}</p>
+                  </TableCell>
+                  <TableCell align="center">
+                    <Button
+                      onClick={() => handleOpen(row._id)}
+                      variant="contained"
+                      href="#contained-buttons"
+                    >
+                      View
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ) : (
+                ""
+              )
+            )}
           </TableBody>
-        </Tablee> 
+        </Tablee>
       </TableContainer>
 
       <Modal
@@ -127,7 +134,7 @@ const Table = ({ application, setSelected ,setTest}) => {
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box  sx={style}>
           <Typography id="modal-modal-title" variant="h6" component="h2">
             Company Details
           </Typography>
@@ -151,6 +158,9 @@ const Table = ({ application, setSelected ,setTest}) => {
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Phone:{modal.Phone}
+          </Typography>
+          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+            BuisnessProposel: {modal.BuisnessProposel}
           </Typography>
         </Box>
       </Modal>

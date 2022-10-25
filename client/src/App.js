@@ -1,5 +1,4 @@
 import {Routes, Route, useNavigate } from "react-router-dom";
-import "./App.css";
 import Home from "./Components/user/Home";
 import Navbar from "./Components/user/Navbar";
 import Application from "./Components/user/Application";

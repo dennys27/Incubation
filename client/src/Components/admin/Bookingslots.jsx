@@ -1,5 +1,5 @@
 import { Grid, Typography } from '@mui/material'
-import React from 'react'
+import React, { useRef } from 'react'
 import { useEffect } from 'react';
 import './booking.css'
 import axios from 'axios'
@@ -14,7 +14,8 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { adminUrl } from '../../Constants/Constants';
 import { useNavigate } from 'react-router-dom';
-
+import { ToastContainer, toast } from "react-toastify";
+import success from '../user/notifications/success.mp3'
 
 
 
@@ -42,6 +43,12 @@ const Bookingslots = () => {
   const [open, setOpen] = useState(false);
   const [sopen, setSopen] = useState(false);
   const navigate = useNavigate()
+
+  const audioPlayer = useRef(null);
+
+ async function playAudio() {
+   await audioPlayer.current.play();
+ }
   
    let token = localStorage.getItem("Admintoken");
   useEffect(() => {
@@ -92,8 +99,20 @@ const Bookingslots = () => {
         }
       )
       .then(() => {
-        setOpen(false);
 
+        toast.info("Success", {
+          position: "top-right",
+          autoClose: 1500,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "dark",
+        });
+
+         playAudio();
+        setOpen(false);
         setChoosen("");
       });
 
@@ -126,6 +145,8 @@ const Bookingslots = () => {
 
   return (
     <>
+      <ToastContainer />
+      <audio ref={audioPlayer} src={success} />
       <Grid
         sx={{ marginBottom: 1 }}
         container
@@ -133,7 +154,6 @@ const Bookingslots = () => {
         columnSpacing={{ xs: 1, sm: 2, md: 3 }}
       >
         {slot.map((data) => {
-         
           return (
             <Grid key={data._id} item xs={1}>
               {data.companyId === "" ? (
@@ -184,10 +204,10 @@ const Bookingslots = () => {
             Companyname :{blocked[0]?.CompanyName}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-           Address :{blocked[0]?.Address}
+            Address :{blocked[0]?.Address}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-           City :{blocked[0]?.City}
+            City :{blocked[0]?.City}
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
             Email :{blocked[0]?.Email}
@@ -224,6 +244,7 @@ const Bookingslots = () => {
               <InputLabel sx={{ color: "black" }} id="demo-select-small">
                 select
               </InputLabel>
+
               <Select
                 labelId="demo-select-small"
                 id="demo-select-small"

@@ -1,5 +1,5 @@
 import { Box, Button,  FormControl, FormControlLabel, FormLabel, Grid, Radio, RadioGroup, TextField, Typography } from '@mui/material'
-import React, { useState,useContext } from 'react'
+import React, { useState,useContext, useRef } from 'react'
 import axios from "axios";
 import './Application.css'
 import Navbar from './Navbar';
@@ -7,16 +7,21 @@ import { AuthContext } from '../../Store/context';
 import { useNavigate } from 'react-router-dom';
 import validator from "validator";
 import { ToastContainer, toast } from "react-toastify";
-
+import success from './notifications/success.mp3'
 
 
 const Application = () => {
+
+   const audioPlayer = useRef(null);
+
+   function playAudio() {
+     audioPlayer.current.play();
+   }
+
+
  const navigate = useNavigate()
  let token =  localStorage.getItem("token")
- 
   let user = JSON.parse(localStorage.getItem("user"));
-  console.log(user._id,"yooooooooooooooooooooooooooo");
-  
   let error = 0;
   if (!user) {
     navigate("/login")
@@ -108,12 +113,12 @@ const Application = () => {
         setEmailError("Enter valid Email!"); 
       }
         if (error === 0) {
-          console.log("im working");
           axios
             .post("http://localhost:8000/application", formData, {
               headers: { token: `Bearer ${token}` },
             }) 
             .then(async (res) => {
+              playAudio()
               await toast.info("Application submited successfully", {
                 position: "top-right",
                 autoClose: 2000,
@@ -151,7 +156,9 @@ const Application = () => {
           noValidate
           autoComplete="off"
         >
-          <Typography variant='h6' sx={{marginBottom:2,color:"gray"}}>REGISTRATION FORM</Typography>
+          <Typography variant="h6" sx={{ marginBottom: 2, color: "gray" }}>
+            REGISTRATION FORM
+          </Typography>
           <Grid
             container
             rowSpacing={3}
@@ -413,6 +420,7 @@ const Application = () => {
                 >
                   Submit
                 </Button>
+                <audio ref={audioPlayer} src={success} />
               </Grid>
             </Grid>
           </Grid>
